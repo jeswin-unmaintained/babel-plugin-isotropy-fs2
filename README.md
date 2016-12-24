@@ -84,15 +84,28 @@ myPhotos["myDir"] = {}
 An alternative if you don't want to use a global identifier is to use isotropy's import syntax for identifiers.
 For proficient users, this is strongly recommended.
 
+Note the "useImports" field below. If true, the transpiler will no longer honor global identifiers (such as myDocuments or myPhotos).
+Instead, you'll have to use the import syntax.
+
 ```json
 {
   "isotropy": {
-    "useImports": true
+    "fs": {
+      "useImports": true,
+      "roots": {
+        "myDocuments": {
+          "path": "docs"
+        },
+        "myPhotos": {
+          "path": "photos"
+        }
+      }
+    }
   }
 }
 ```
 
-The code is a little more robust, but this approach is way more robust.
+The code is more verbose, but this approach is way more robust.
 
 ```javascript
 import isotropyFS from "isotropy-fs";
