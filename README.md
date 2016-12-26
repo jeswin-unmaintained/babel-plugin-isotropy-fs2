@@ -2,33 +2,30 @@ Isotropy File System Transpiler
 ===============================
 A variable identifier called "fs" is used to identify file system operations. A directory called "data" under the current directory is used as the store.
 
-Create a directory
+Create a file
 ```javascript
-fs["myDir"] = {}
-//OR
-fs.myDir = {}
+fs = fs.concat({ dir: "documents", filename: "report.txt", contents: "hello, world" });
 ```
 
-Write a file inside the directory
+Delete a file
 ```javascript
-fs["myDir"]["myFile.txt"] = "Hello, world";
-//OR
-fs.myDir["myFile.txt"] = "Hello, world";
+fs =  fs.filter(file => !(file.dir === "documents" && file.filename === "report.txt"))
 ```
 
-List contents of a directory.
+Update a file
 ```javascript
-const contents = Object.keys(fs["myDir"] )
+fs =  fs.filter(file => file.dir === "documents" && file.filename === "report.txt") ?
+  { contents: "hello, universe", ...file } : file;
 ```
 
-Read a file
+Get all files in the directory
 ```javascript
-const content = fs["myDir"]["myFile.txt"];
+return fs.filter(file => file.dir === "/some/path")
 ```
 
-Create a sub-directory
+Get all files in the directory, including sub-directories
 ```javascript
-fs["myDir"]["mySubDir"] = {};
+return fs.filter(file => file.dir === "/some/path" || file.dir.startsWith("/some/path"))
 ```
 
 Advanced
@@ -53,8 +50,7 @@ In the following example, myFS is used in place of fs.
 This can be referenced in JavaScript as:
 
 ```javascript
-//Create a directory. Note that the identifier is myFS.
-myFS["myDir"] = {}
+myFS = myFS.concat({ dir: "documents", filename: "report.txt", contents: "hello, world" });
 ```
 
 As you can see, you can have multiple roots.
@@ -76,9 +72,8 @@ As you can see, you can have multiple roots.
 ```
 
 ```javascript
-//Create a directory. Note that the identifier is myFS.
-myDocuments["myDir"] = {}
-myPhotos["myDir"] = {}
+myDocuments = myDocuments.concat({ dir: "documents", filename: "report.txt", contents: "hello, world" });
+myPhotos = myPhotos.concat({ dir: "documents", filename: "report.txt", contents: "hello, world" });
 ```
 
 An alternative if you don't want to use a global identifier is to use isotropy's import syntax for identifiers.
@@ -109,8 +104,8 @@ The code is more verbose, but this approach is way more robust.
 
 ```javascript
 import isotropyFS from "isotropy-fs";
-const myFS = isotropyFS("myFS");
-myFS["myFile.txt"] = "hello, world";
+const myDocuments = isotropyFS("myDocuments");
+myDocuments = myDocuments.concat({ dir: "documents", filename: "report.txt", contents: "hello, world" });
 ```
 
 To use multiple root directories, follow the same approach seen earlier.
@@ -134,7 +129,7 @@ To use multiple root directories, follow the same approach seen earlier.
 
 ```javascript
 import isotropyFS from "isotropy-fs";
-const docs = isotropyFS("myDocuments");
-const photos = isotropyFS("myPhotos");
-docs["myFile.txt"] = "hello, world";
+const myDocuments = isotropyFS("myDocuments");
+myDocuments = myDocuments.concat({ dir: "documents", filename: "report.txt", contents: "hello, world" });
+myPhotos = myPhotos.concat({ dir: "documents", filename: "report.txt", contents: "hello, world" });
 ```
