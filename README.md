@@ -4,28 +4,46 @@ A variable identifier called "fs" is used to identify file system operations. A 
 
 Create a file
 ```javascript
-fs = fs.concat({ dir: "documents", filename: "report.txt", contents: "hello, world" });
+async function createFile() {
+  fs = fs.concat({ dir: "documents", filename: "report.txt", contents: "hello, world" });
+}
 ```
 
 Delete a file
 ```javascript
-fs =  fs.filter(file => !(file.dir === "documents" && file.filename === "report.txt"))
+async function deleteFile() {
+  fs =  fs.filter(file => !(file.dir === "documents" && file.filename === "report.txt"))
+}
 ```
 
 Update a file
 ```javascript
-fs =  fs.filter(file => file.dir === "documents" && file.filename === "report.txt") ?
-  { contents: "hello, universe", ...file } : file;
+async function updateFile() {
+  fs =  fs.map(file => file.dir === "documents" && file.filename === "report.txt") ?
+    { contents: "hello, universe", ...file } : file;
+}
 ```
 
 Get all files in the directory
 ```javascript
-return fs.filter(file => file.dir === "/some/path")
+async function getFiles() {
+  return fs.filter(file => file.dir === "/some/path")
+}
 ```
 
 Get all files in the directory, including sub-directories
 ```javascript
-return fs.filter(file => file.dir === "/some/path" || file.dir.startsWith("/some/path"))
+async function getFiles() {
+  return fs.filter(file => file.dir === "/some/path" || file.dir.startsWith("/some/path/"))
+}
+```
+
+Read a file
+```javascript
+async function getFiles() {
+  const file = fs.find(file => file.dir === "/some/path" && filename === "report.txt");
+  console.log(file.contents);
+}
 ```
 
 Advanced
@@ -50,7 +68,9 @@ In the following example, myFS is used in place of fs.
 This can be referenced in JavaScript as:
 
 ```javascript
-myFS = myFS.concat({ dir: "documents", filename: "report.txt", contents: "hello, world" });
+async function createFile() {
+  myFS = myFS.concat({ dir: "documents", filename: "report.txt", contents: "hello, world" });
+}
 ```
 
 As you can see, you can have multiple roots.
@@ -72,8 +92,10 @@ As you can see, you can have multiple roots.
 ```
 
 ```javascript
-myDocuments = myDocuments.concat({ dir: "documents", filename: "report.txt", contents: "hello, world" });
-myPhotos = myPhotos.concat({ dir: "documents", filename: "report.txt", contents: "hello, world" });
+async function createFiles() {
+  myDocuments = myDocuments.concat({ dir: "documents", filename: "report.txt", contents: "hello, world" });
+  myPhotos = myPhotos.concat({ dir: "documents", filename: "face.gif", contents: "AADE32df..." });
+}
 ```
 
 An alternative if you don't want to use a global identifier is to use isotropy's import syntax for identifiers.
@@ -105,7 +127,10 @@ The code is more verbose, but this approach is way more robust.
 ```javascript
 import isotropyFS from "isotropy-fs";
 const myDocuments = isotropyFS("myDocuments");
-myDocuments = myDocuments.concat({ dir: "documents", filename: "report.txt", contents: "hello, world" });
+
+async function createFile() {
+  myDocuments = myDocuments.concat({ dir: "documents", filename: "report.txt", contents: "hello, world" });
+}
 ```
 
 To use multiple root directories, follow the same approach seen earlier.
@@ -130,6 +155,10 @@ To use multiple root directories, follow the same approach seen earlier.
 ```javascript
 import isotropyFS from "isotropy-fs";
 const myDocuments = isotropyFS("myDocuments");
-myDocuments = myDocuments.concat({ dir: "documents", filename: "report.txt", contents: "hello, world" });
-myPhotos = myPhotos.concat({ dir: "documents", filename: "report.txt", contents: "hello, world" });
+const myPhotos = isotropyFS("myPhotos");
+
+async function createFiles() {
+  myDocuments = myDocuments.concat({ dir: "documents", filename: "report.txt", contents: "hello, world" });
+  myPhotos = myPhotos.concat({ dir: "documents", filename: "face.gif", contents: "AADE32df..." });
+}
 ```
