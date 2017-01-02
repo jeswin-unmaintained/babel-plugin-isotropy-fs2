@@ -1,3 +1,3 @@
 async function deleteFile() {
-  await istropyFS.deleteFile("documents", "report.txt");
+  await isotropyFS.deleteFile("documents", "report.txt");
 }

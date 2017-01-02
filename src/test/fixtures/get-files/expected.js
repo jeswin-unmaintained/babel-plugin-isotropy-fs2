@@ -1,3 +1,3 @@
 async function getFiles() {
-  return await istropyFS.getFiles("/some/path", false);
+  return await isotropyFS.getFiles("/some/path", false);
 }

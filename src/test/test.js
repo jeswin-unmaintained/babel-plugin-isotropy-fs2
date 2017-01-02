@@ -18,6 +18,11 @@ describe("babel-plugin-isotropy-mongodb", () => {
   }
 
   [
-    'create-directory',
+    'create-file',
+    'delete-file',
+    'get-files',
+    'get-files-sub-dirs',
+    'read-file',
+    'update-file',
   ].map(test);
 });
